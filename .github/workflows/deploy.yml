@@ -1,0 +1,26 @@
+name:  Terraform Deployment Pipeline
+
+on:
+  repository_dispatch:
+    types: [start-deployment]
+
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout repository
+            uses: actions/checkout@v2
+    
+          - name: Set up Terraform
+            uses: hashicorp/setup-terraform@v1
+            with:
+                terraform_version: 1.5.0
+    
+          - name: Initialize Terraform
+            run: terraform init
+    
+        #   - name: Apply Terraform configuration
+        #     run: terraform apply -auto-approve
+        #     env:
+        #         TF_VAR_example_variable: ${{ secrets.EXAMPLE_VARIABLE }}
