@@ -25,10 +25,27 @@ jobs:
             with:
                 terraform_version: 1.5.0
     
-          - name: Initialize Terraform
-            run: terraform init
     
-        #   - name: Apply Terraform configuration
-        #     run: terraform apply -auto-approve
-        #     env:
-        #         TF_VAR_example_variable: ${{ secrets.EXAMPLE_VARIABLE }}
+          - name: Trigger Terraform Cloud
+            run: |
+              curl -X POST https://app.terraform.io/api/v2/runs \
+                -H "Authorization: Bearer ${{ secrets.TF_AUTH_TOKEN }}" \
+                -H "Content-Type: application/vnd.api+json" \
+                -d '{
+                  "data": {
+                    "attributes": {
+                      "message": "Triggered by repo B via workflow_dispatch",
+                      "plan-only": false
+                    },
+                    "type": "runs",
+                    "relationships": {
+                      "workspace": {
+                        "data": {
+                          "type": "workspaces",
+                          "name": "Task_manager_infranstructure_Code"
+                        }
+                      }
+                    }
+                  }
+                }'
+
