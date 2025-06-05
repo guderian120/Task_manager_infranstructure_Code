@@ -1,8 +1,7 @@
 name:  Terraform Deployment Pipeline
 
 on:
-  repository_dispatch:
-    types: [start-deployment]
+  workflow_dispatch:
 
 
 permissions:
